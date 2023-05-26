@@ -29,6 +29,7 @@ func main() {
 		//blankPages := []*page.PageImpl{&p3}
 
 	*/
+
 	// Insert Pages
 	blankPages := []*page.PageImpl{}
 
@@ -53,7 +54,6 @@ func main() {
 	fmt.Println("Normal")
 	dir.Scan()
 
-	fmt.Println("Seek")
 	dir.Seek("aaa")
 	dir.Seek("a")
 	dir.Seek("b")
@@ -77,71 +77,69 @@ func main() {
 		fmt.Println(pag)
 	}
 
-
-
 	/*
-	//Scan
-	//dir := directory.Directory{BlankPages: blankPages, UsedPages: usedPages}
-	dir.Scan()
+		//Scan
+		//dir := directory.Directory{BlankPages: blankPages, UsedPages: usedPages}
+		dir.Scan()
 
-	// INSERT
-	fmt.Println("******************* INSERT *******************")
+		// INSERT
+		fmt.Println("******************* INSERT *******************")
 
-	for i := 0; i < 5; i++ {
-		dir.Insert("aaa")
-	}
-	dir.Insert("x1")
-	dir.Insert("x2")
-	dir.Insert("bbb1")
-	dir.Insert("bbb2")
-	dir.Insert("bbb3")
-	dir.Insert("bbb4")
-	dir.Insert("bbb5")
-	dir.Insert("bbb6")
+		for i := 0; i < 5; i++ {
+			dir.Insert("aaa")
+		}
+		dir.Insert("x1")
+		dir.Insert("x2")
+		dir.Insert("bbb1")
+		dir.Insert("bbb2")
+		dir.Insert("bbb3")
+		dir.Insert("bbb4")
+		dir.Insert("bbb5")
+		dir.Insert("bbb6")
 
-	for i := 0; i < 9; i++ {
-		dir.Insert("aaa")
-	}
-	
-	for i := 0; i < 5; i++ {
-		dir.Delete("aaa")
-	}
+		for i := 0; i < 9; i++ {
+			dir.Insert("aaa")
+		}
 
-	dir.Delete("x1")
-	dir.Delete("x2")
-	dir.Delete("bbb1")
-	dir.Delete("bbb2")
-	dir.Delete("bbb3")
-	dir.Delete("bbb4")
-	dir.Delete("bbb5")
-	dir.Delete("bbb6")
+		for i := 0; i < 5; i++ {
+			dir.Delete("aaa")
+		}
 
-	fmt.Println("Vazias:")
-	for _, pag := range dir.BlankPages {
-		fmt.Println(pag)
-	}
+		dir.Delete("x1")
+		dir.Delete("x2")
+		dir.Delete("bbb1")
+		dir.Delete("bbb2")
+		dir.Delete("bbb3")
+		dir.Delete("bbb4")
+		dir.Delete("bbb5")
+		dir.Delete("bbb6")
 
-	fmt.Println("Usadas:")
-	for _, pag := range dir.UsedPages {
-		fmt.Println(pag)
-	}
+		fmt.Println("Vazias:")
+		for _, pag := range dir.BlankPages {
+			fmt.Println(pag)
+		}
 
-	/*
-	dir.Insert("iii1")
-	dir.Insert("iii2")
+		fmt.Println("Usadas:")
+		for _, pag := range dir.UsedPages {
+			fmt.Println(pag)
+		}
 
-	dir.ScanWithPages()
+		/*
+		dir.Insert("iii1")
+		dir.Insert("iii2")
 
-	fmt.Println("Vazias:")
-	for _, pag := range dir.BlankPages {
-		fmt.Println(pag)
-	}
+		dir.ScanWithPages()
 
-	fmt.Println("Usadas:")
-	for _, pag := range dir.UsedPages {
-		fmt.Println(pag)
-	}
-	fmt.Printf("")
-	dir.ScanWithPages()
-*/
+		fmt.Println("Vazias:")
+		for _, pag := range dir.BlankPages {
+			fmt.Println(pag)
+		}
+
+		fmt.Println("Usadas:")
+		for _, pag := range dir.UsedPages {
+			fmt.Println(pag)
+		}
+		fmt.Printf("")
+		dir.ScanWithPages()
+	*/
 }
