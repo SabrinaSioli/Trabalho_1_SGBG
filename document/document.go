@@ -1,24 +1,27 @@
 package document
 
+//DID e conteúdo como atributos de Documento
 type Document struct {
-	DID DID
-	Info string
+	DID  DID
+	Content string
 }
 
+//Tupla <int page id, int seq, int tam> 
 type DID struct {
-	PageId int
-	Seq int
-	Tam int
+	PageId int //identificador página
+	Seq    int //endereço da posição inicial do documento na página
+	Size   int //tamanho em bytes do documento
 }
 
-func NewDocument(pageId int, seq int, tam int, info string) *Document {
-	did := DID {
-		PageId: pageId, 
-		Seq: seq, 
-		Tam: tam,
+//Construtor de novo documento
+func NewDocument(pageId int, seq int, size int, content string) *Document {
+	did := DID{
+		PageId: pageId,
+		Seq:    seq,
+		Size:   size,
 	}
 	return &Document{
-		DID: did,
-		Info: info,
+		DID:  did,
+		Content: content,
 	}
 }
