@@ -1,145 +1,146 @@
+// Trabalho 01 SGBD Prof Zé Maria
+// Luiza Clara de Albuquerque Pacheco 493478
+// Sabrina Silveira Oliveira 494013
+
 package main
 
 import (
 	"Trabalho_1_SGBD/directory"
-	"Trabalho_1_SGBD/page"
 	"fmt"
 )
 
-const MaxPage = 20
-
 func main() {
-	//Testes Iniciais
-	/*
-		doc := document.NewDocument(0,0,0,"str")
-		fmt.Println(doc)
-		p := page.PageImpl{Header: [5]int{1, 2, 3, 4, 5}, Documents: []*document.Document{doc}}
-		fmt.Println(p)
-		d := directory.Directory{UsedPages: []*page.PageImpl{&p}, BlankPages: nil}
-		fmt.Println(d.UsedPages)
+	dir := directory.Init() //Criação do Diretório com as 20 páginas vazias
+	var option string
+	
+	for {
+		fmt.Println("\n ******************** MENU ******************** ")
+		fmt.Println("[ 1 ] SCAN")
+		fmt.Println("[ 2 ] SCAN PAGES")
+		fmt.Println("[ 3 ] SEEK")
+		fmt.Println("[ 4 ] DELETE")
+		fmt.Println("[ 5 ] INSERT")
+		fmt.Println("[ 6 ] SAIR")
+		fmt.Print("Escolha uma opção: ")
+		fmt.Scan(&option)
 
-		d1 := document.NewDocument(0, 0, 2, "d1")
-		d2 := document.NewDocument(0, 2, 2, "d2")
-		d3 := document.NewDocument(1, 0, 2, "d3")
-		d4 := document.NewDocument(1, 2, 2, "d4")
-		p1 := page.PageImpl{Header: [5]int{1, 2, 3, 4, 5}, Documents: []*document.Document{d1, d2}}
-		p2 := page.PageImpl{Header: [5]int{1, 2, 3, 4, 5}, Documents: []*document.Document{d3, d4}}
-		p3 := page.PageImpl{Header: [5]int{1, 2, 3, 4, 5}, Documents: []*document.Document{}}
-		usedPages := []*page.PageImpl{&p1,&p2}
-		//blankPages := []*page.PageImpl{&p3}
-
-	*/
-
-	// Insert Pages
-	blankPages := []*page.PageImpl{}
-
-	for i := 0; i < 20; i++ {
-		blankPages = append(blankPages, page.NewPage(i))
+		switch option {
+		case "1":
+		fmt.Println(" ___________________________ SCAN ___________________________ ")
+		dir.Scan()
+		case "2": 
+		fmt.Println(" ___________________________ SCAN PAGES ___________________________ ")
+		dir.ScanPages()
+		case "3": 
+		fmt.Println(" ___________________________ SEEK ___________________________ ")
+		fmt.Print("\nConteúdo: ")
+		var content string
+		fmt.Scan(&content)
+		dir.Seek(content)
+		case "4":
+		fmt.Println(" ___________________________ DELETE ___________________________ ")
+		fmt.Print("\nConteúdo: ")
+		var content string
+		fmt.Scan(&content)
+		dir.Delete(content)
+		case "5": 
+		fmt.Println(" ___________________________ INSERT ___________________________ ")
+		var content string
+		fmt.Print("Digite o conteúdo: ")
+		fmt.Scan(&content)
+		if len(content) < 1 || len(content) > 5 {
+			fmt.Println("Conteúdo de tamanho inválido.")
+		} else {
+			dir.Insert(content)
+		}
+		case "6":
+			fmt.Println("Saindo do programa.")
+			return
+		default:
+			fmt.Println("Entrada inválida.")
+			option = "0"
+		} 
+		
 	}
-	dir := directory.Init(blankPages)
 
-	for i := 0; i < 15; i++ {
-		dir.Insert("aaa")
-	}
-	dir.Insert("a")
-	dir.Insert("a")
-	dir.Insert("aaa")
-	dir.Insert("aaa")
-	dir.Insert("aaa")
-	dir.Insert("aaa")
-	dir.Insert("aaa")
+	//fmt.Println(" ----------------------- CASOS TESTES ----------------------- ")
 
-	dir.ScanPages()
+	// preencher todas as páginas
+	// 1a) inserir 10 "aaa" e 10 "bbb"
+	// 3a) scan e scan pages
+	// 4a) seek "aaa"
+	// 4b) seek "bbb"
+	// 4c) seek "aa"
 
-	fmt.Println("Normal")
-	dir.Scan()
+	// completar páginas com espaço
+	// 1b) inserir 2 "cc" e 2 "d"
+	// 3b) scan e scan pages
+	// 4d) seek "cc"
+	// 4e) seek "d"
+	// 4f) seek "dd"
 
-	dir.Seek("aaa")
-	dir.Seek("a")
-	dir.Seek("b")
-	dir.Seek("aaa")
+	// inserir sem espaço suficiente
+	// 1c) inserir "eeee"
+	// 3c) scan e scan pages
+	// 4g) seek "eeee"
 
-	dir.Delete("aaa")
-	dir.Delete("a")
-	dir.Delete("aaa")
-	//dir.ScanWithPages()
+	// deletar somente primeira ocorrência + remover das páginas usadas
+	// 2a) deletar "bbb"
+	// 3d) scan e scan pages
+	// 4h) seek "bbb"
+
+	// inserir nas páginas em branco
+	// 1d) inserir "fff"
+	// 3e) scan e scan pages
+	// 4i) seek "fff"
+
+	// atualizar documentos da página após deletar
+	// 2b) deletar "d"
+	// 3f) scan e scan pages
+
+	// inserir nas páginas usadas
+	// 1e) inserir "g"
+	// 4j) seek "g"
+	// 3g) scan e scan pages
+
+	//fmt.Println(" ----------------------- TESTES SEM MENU ----------------------- ")
+
+	// for i := 0; i < 15; i++ {
+	// 	dir.Insert("aaa")
+	// }
+	// dir.Insert("a")
+	// dir.Insert("a")
+	// dir.Insert("aaa")
+	// dir.Insert("aaa")
+	// dir.Insert("aaa")
+	// dir.Insert("aaa")
+	// dir.Insert("aaa")
+
+	// dir.ScanPages()
+
+	// fmt.Println("Normal")
+	// dir.Scan()
+
+	// dir.Seek("aaa")
+	// dir.Seek("a")
+	// dir.Seek("b")
+	// dir.Seek("aaa")
+
+	// dir.Delete("aaa")
+	// dir.Delete("a")
+	// dir.Delete("aaa")
+	// //dir.ScanWithPages()
+
+	// // fmt.Println("Vazias:")
+	// // for _, pag := range dir.BlankPages {
+	// // 	fmt.Println(pag)
+	// // }
+
+	// dir.Insert("aaaaa")
+	// dir.ScanPages()
 
 	// fmt.Println("Vazias:")
 	// for _, pag := range dir.BlankPages {
 	// 	fmt.Println(pag)
 	// }
-
-	dir.Insert("aaaaa")
-	dir.ScanPages()
-
-	fmt.Println("Vazias:")
-	for _, pag := range dir.BlankPages {
-		fmt.Println(pag)
-	}
-
-	/*
-		//Scan
-		//dir := directory.Directory{BlankPages: blankPages, UsedPages: usedPages}
-		dir.Scan()
-
-		// INSERT
-		fmt.Println("******************* INSERT *******************")
-
-		for i := 0; i < 5; i++ {
-			dir.Insert("aaa")
-		}
-		dir.Insert("x1")
-		dir.Insert("x2")
-		dir.Insert("bbb1")
-		dir.Insert("bbb2")
-		dir.Insert("bbb3")
-		dir.Insert("bbb4")
-		dir.Insert("bbb5")
-		dir.Insert("bbb6")
-
-		for i := 0; i < 9; i++ {
-			dir.Insert("aaa")
-		}
-
-		for i := 0; i < 5; i++ {
-			dir.Delete("aaa")
-		}
-
-		dir.Delete("x1")
-		dir.Delete("x2")
-		dir.Delete("bbb1")
-		dir.Delete("bbb2")
-		dir.Delete("bbb3")
-		dir.Delete("bbb4")
-		dir.Delete("bbb5")
-		dir.Delete("bbb6")
-
-		fmt.Println("Vazias:")
-		for _, pag := range dir.BlankPages {
-			fmt.Println(pag)
-		}
-
-		fmt.Println("Usadas:")
-		for _, pag := range dir.UsedPages {
-			fmt.Println(pag)
-		}
-
-		/*
-		dir.Insert("iii1")
-		dir.Insert("iii2")
-
-		dir.ScanWithPages()
-
-		fmt.Println("Vazias:")
-		for _, pag := range dir.BlankPages {
-			fmt.Println(pag)
-		}
-
-		fmt.Println("Usadas:")
-		for _, pag := range dir.UsedPages {
-			fmt.Println(pag)
-		}
-		fmt.Printf("")
-		dir.ScanWithPages()
-	*/
 }

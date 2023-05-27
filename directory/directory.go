@@ -12,13 +12,19 @@ type Directory struct {
 }
 
 // Inicializador do diretório
-func Init(blankPages []*page.PageImpl) *Directory {
+func Init() *Directory {
+	blankPages := []*page.PageImpl{}
+
+	for i := 0; i < 20; i++ {
+		blankPages = append(blankPages, page.NewPage(i))
+	}
+
 	return &Directory{
 		BlankPages: blankPages, //somente páginas em branco no início
 	}
 }
 
-// Retorna todos os documentos do diretório <content>
+// Retorna todos os documentos do diretório com <content>
 func (dir *Directory) Scan() []*document.Document {
 	var documents []*document.Document
 	for _, pag := range dir.UsedPages {
@@ -42,40 +48,48 @@ func (dir *Directory) ScanPages() []*document.Document {
 
 // Função auxiliar de Scan para imprimir documentos
 func PrintDocuments(documents []*document.Document) {
-	fmt.Println(" *************** EXECUTANDO SCAN ***************")
-	for _, doc := range documents {
-		//IMPRIMINDO
-		fmt.Printf("[ \"%s\" ] ", doc.Content)
+	if len(documents) != 0 {
+		for _, doc := range documents {
+			//IMPRIMINDO
+			fmt.Printf("[ \"%s\" ] ", doc.Content)
+		}
+
+		fmt.Println()
+	} else {
+		fmt.Print("Todas as páginas estão vazias\n\n")
 	}
-	fmt.Println()
+	
 }
 
 // Função auxiliar de ScanPages para imprimir páginas usadas
 func PrintPages(documents []*document.Document) {
-	fmt.Println(" ********** EXECUTANDO SCAN WITH PAGES **********")
-	idLine := documents[0].DID.PageId //identificador de página para usar na quebra de linha
-	for _, doc := range documents {
-		if doc.DID.PageId != idLine {
-			fmt.Println("")
-			idLine = doc.DID.PageId
+	if len(documents) != 0 {
+		idLine := documents[0].DID.PageId //identificador de página para usar na quebra de linha
+		for _, doc := range documents {
+			if doc.DID.PageId != idLine {
+				fmt.Println("")
+				idLine = doc.DID.PageId
+			}
+			//IMPRIMINDO
+			fmt.Printf("[ PageId: %d, Seq: %d, Content: \"%s\" ] ", doc.DID.PageId, doc.DID.Seq, doc.Content)
 		}
-		//IMPRIMINDO
-		fmt.Printf("[ PageId: %d, Seq: %d, Content: \"%s\" ] ", doc.DID.PageId, doc.DID.Seq, doc.Content)
+		fmt.Println()
+	} else {
+		fmt.Print("Todas as páginas estão vazias\n\n")
 	}
-	fmt.Println()
 }
 
 // Retorna DID do documento encontrado ou mensagem de erro se não existir
 func (dir *Directory) Seek(content string) {
 	foundDoc := false
-	fmt.Println("\n******************* SEEK  *******************")
+	fmt.Println("\n___________________________ SEEK ___________________________")
 	for _, pag := range dir.UsedPages { //busca nas páginas usadas
 		for _, doc := range pag.Documents {
 			if doc.Content == content && !foundDoc {
 				foundDoc = true //flag para garantir apenas 1ª ocorrência
 
 				//IMPRIMINDO
-				fmt.Printf("\nO documento com \"%s\" foi encontrado!\n", content)
+				fmt.Printf("O documento com \"%s\" foi encontrado!\n", content)
 				fmt.Printf("<pageIde: %d, seq: %d, tam: %d> \n\n", doc.DID.PageId, doc.DID.Seq, doc.DID.Size)
 
 				break
@@ -84,13 +98,13 @@ func (dir *Directory) Seek(content string) {
 	}
 	if !foundDoc { //flag indicando página não encontrada
 		//IMPRIMINDO
-		fmt.Printf("\nO documento com \"%s\" não foi encontrado!\n", content)
+		fmt.Printf("O documento com \"%s\" não foi encontrado!\n\n", content)
 	}
 }
 
 // Insere documento no diretório se houver espaço
 func (dir *Directory) Insert(content string) {
-	fmt.Printf("\n ********** INSERT ********** \n")
+	//fmt.Printf("\n ********** INSERT ********** \n")
 	foundPage := false
 
 	//primeiro busca espaço nas páginas já usadas
@@ -136,12 +150,11 @@ func (dir *Directory) Insert(content string) {
 
 // Deleta primeiro documento encontrado com o conteúdo ou exibe mensagem de erro se não existir
 func (dir *Directory) Delete(content string) {
-	fmt.Println("\n******************* DELETE  *******************")
 	foundDoc := false
 	for index, pag := range dir.UsedPages { //busca nas páginas usadas
 		if !foundDoc {
 			for _, doc := range pag.Documents { //varrendo documentos da página
-				if doc.Content == content {
+				if doc.Content == content && !foundDoc {
 					pag.DeleteDocument(doc)       //deletando documento do array da página
 					pag.UpdateHeaderOnDelete(doc) //atualizando header com flag de cada byte usado/branco
 
